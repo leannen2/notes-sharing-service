@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: note-share-api
+  datasource:
+    url: jdbc:postgresql://localhost:5332/customer
+    username: devuser
+    password: devpassword
+
+aws:
+  region: us-east-2
+  s3:
+    buckets:
+      note: note-share-test

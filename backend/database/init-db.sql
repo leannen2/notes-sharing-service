@@ -1,0 +1,5 @@
+CREATE TABLE note (
+  id VARCHAR(255) PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  class_name VARCHAR(255) NOT NULL
+);
