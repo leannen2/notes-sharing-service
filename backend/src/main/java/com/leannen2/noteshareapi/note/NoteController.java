@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/notes")
@@ -20,9 +22,17 @@ public class NoteController {
         noteService.uploadNote(className, file);
     }
 
-    @GetMapping(value="{className}/{noteId}/file")
-    public byte[] getFile(@PathVariable("noteId") String className, @PathVariable("noteId") Integer noteId) {
-        return noteService.getNote(className, noteId);
+    @GetMapping(
+            value="{className}/{noteId}/file",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public byte[] getFile(@PathVariable("className") String className, @PathVariable("noteId") String noteId) {
+        return noteService.getNoteFile(className, noteId);
+    }
+
+    @GetMapping (value="{className}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public List<Note> getNotes(@PathVariable("className") String className) {
+        return noteService.getNotesByClassName(className);
     }
 
 }

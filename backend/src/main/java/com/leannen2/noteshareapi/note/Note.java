@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="note")
+@Table(name="note", schema = "public")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,10 +17,16 @@ public class Note {
     @Column(nullable = false)
     private String id;
 
-    @Column(nullable = false)
+    @Column(
+            nullable = false,
+            name = "user_id"
+    )
     private long userId;
 
-    @Column(nullable = false)
+    @Column(
+            nullable = false,
+            name="class_name"
+    )
     private String className;
 
     @Override

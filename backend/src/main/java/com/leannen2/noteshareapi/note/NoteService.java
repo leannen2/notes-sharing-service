@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,9 +16,9 @@ public class NoteService {
 
     private final S3Service s3Service;
     private final S3Buckets s3Buckets;
+    private final NoteJDBCDataAccessService dataAccessService;
 
     public void uploadNote(String className, MultipartFile file) {
-        // TODO: verify className
         String noteId = UUID.randomUUID().toString();
         try {
             s3Service.putObject(
@@ -29,12 +30,15 @@ public class NoteService {
             throw new RuntimeException(e);
         }
 
-        // TODO: Store noteId to postgres
+        dataAccessService.insertNote(new Note(noteId, 0, className));
     }
 
-    // TODO: method to get all notes for a className?
+    public List<Note> getNotesByClassName(String className) {
+        return dataAccessService.selectNoteByClassName(className);
+    }
 
-    public byte[] getNote(String className, Integer noteId) {
+
+    public byte[] getNoteFile(String className, String noteId) {
         return s3Service.getObject(
                 s3Buckets.getNote(),
                 "notes/%s/%s".formatted(className, noteId)
